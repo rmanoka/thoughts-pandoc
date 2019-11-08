@@ -7,29 +7,29 @@ function escapeHtml(unsafe) {
         .replace(/'/g, "&#039;");
 }
 
-module.exports = function(doc) {
+module.exports = function(doc, meta={}) {
     const root = document.getElementById("content") || document.body;
     const element = document.createElement('div');
-    element.innerHTML = doc.content;
+    element.innerHTML = doc;
     root.appendChild(element);
 
-    if (doc.meta && doc.meta.title) {
+    if (meta && meta.title) {
         let title = '';
         if (document.title) {
             title = `${document.title} - `;
         }
-        title += doc.meta.title;
+        title += meta.title;
         document.title = title;
 
         const el = document.getElementById("title");
         if (el) {
-            el.innerHTML = doc.meta.title;
+            el.innerHTML = meta.title;
         }
     }
 
     const el = document.createElement('pre');
     const code = document.createElement('code');
-    code.innerHTML = escapeHtml(JSON.stringify(doc, null, 2));
+    code.innerHTML = escapeHtml(JSON.stringify(meta, null, 2));
     el.appendChild(code);
     root.appendChild(el);
 };

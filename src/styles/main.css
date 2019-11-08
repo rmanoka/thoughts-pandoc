@@ -1,9 +1,4 @@
-html {
-    box-sizing: border-box;
-}
-*, *:before, *:after {
-    box-sizing: inherit;
-}
+@import './border-sizing.css';
 
 p {
     text-align: justify;

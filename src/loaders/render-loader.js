@@ -7,7 +7,7 @@ module.exports = function(source) {
 
 module.exports.pitch = function(remainingRequest, precedingRequest, data) {
     return `import render from ${stringifyRequest(this, renderPath)};
-import src from '!!${remainingRequest}';
-export default render(src);
+import src, {metadata} from '!!${remainingRequest}';
+export default render(src, metadata);
 `;
 };
