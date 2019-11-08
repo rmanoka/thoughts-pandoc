@@ -1,0 +1,26 @@
+{
+    "name": "blogs",
+    "version": "1.0.0",
+    "description": "Blog helpers",
+    "author": "Rajsekar Manokaran <rajsekar@gmail.com>",
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "start": "webpack-dev-server",
+        "build": "webpack"
+    },
+    "devDependencies": {
+        "clean-webpack-plugin": "^3.0.0",
+        "css-loader": "^3.2.0",
+        "file-loader": "^4.2.0",
+        "html-loader": "^0.5.5",
+        "html-webpack-plugin": "^4.0.0-beta.8",
+        "loader-utils": "^1.2.3",
+        "postcss-loader": "^3.0.0",
+        "postcss-preset-env": "^6.7.0",
+        "style-loader": "^1.0.0",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10",
+        "webpack-dev-server": "^3.9.0"
+    }
+}
