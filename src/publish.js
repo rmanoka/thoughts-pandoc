@@ -22,16 +22,20 @@ function browserContext(html) {
     return ctx;
 }
 
-const htmlPath = require.resolve("../dist/index.html");
-const srcPath = require.resolve("../dist/render/index.js");
+function render(src, code) {
+    const ctx = browserContext(src);
+    vmExecute('__main__', code, ctx);
+    return ctx.document.documentElement.innerHTML;
+}
 
 const fs = require('fs');
-const path = require('path');
-const ctx = browserContext(fs.readFileSync(htmlPath));
-const destPath = path.join(path.dirname(htmlPath), 'generated.html');
-console.log('destination: ', destPath);
+function renderFile(srcPath, jsPath, destPath) {
+    const src = fs.readFileSync(srcPath);
+    const code = fs.readFileSync(jsPath);
+    if (!destPath) destPath = srcPath;
 
-vmExecute(srcPath, fs.readFileSync(srcPath), ctx);
-const htmlOutput = `<!DOCTYPE HTML>\n<html>${ctx.document.documentElement.innerHTML}</html>`;
+    const output = render(src, code);
+    fs.writeFileSync(destPath, `<!DOCTYPE HTML>\n<html>${output}</html>`);
+}
 
-fs.writeFileSync(destPath, htmlOutput);
+module.exports = {browserContext, vmExecute, render, renderFile};

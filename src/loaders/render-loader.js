@@ -6,8 +6,8 @@ module.exports = function(source) {
 };
 
 module.exports.pitch = function(remainingRequest, precedingRequest, data) {
-    return `import render from ${stringifyRequest(this, renderPath)};
-import src, {metadata} from '!!${remainingRequest}';
-export default render(src, metadata);
+    return `const render = require(${stringifyRequest(this, renderPath)});
+const doc = require('!!${remainingRequest}');
+module.exports = render(doc);
 `;
 };
