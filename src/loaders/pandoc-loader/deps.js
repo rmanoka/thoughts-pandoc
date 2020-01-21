@@ -1,6 +1,13 @@
+const { metaToString, metaToObject } = require('../../lib/pandoc/utils.js');
+
 module.exports = class PandocDeps {
     constructor() {
         this.deps = [];
+    }
+
+    collectCSS(meta) {
+        if (!meta.css) return null;
+        return metaToObject(meta.css);
     }
 
     collectArray(items) {

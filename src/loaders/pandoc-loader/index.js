@@ -20,13 +20,17 @@ module.exports = function(source) {
             const output = [];
             output.push(`const ast = ${src};\n`);
             output.push(`const deps = {};\n`);
-            for(let d of dp.deps) {
-                if (isUrlRequest(d)) {
-                    let req = JSON.stringify(decodeURIComponent(d));
-                    output.push(`deps[${req}] = require(${req});\n`);
-                }
-            }
+
+            requireDeps(dp.deps, 'deps', output);
             output.push(`ast.meta.deps = deps;\n`);
+
+            const cssDeps = dp.collectCSS(meta);
+            if (cssDeps) {
+                output.push(`const cssDeps = {};\n`);
+                requireDeps(cssDeps, 'cssDeps', output);
+                output.push(`ast.meta.css = cssDeps;\n`);
+            }
+
             output.push(`module.exports = ast;\n`);
             cb(null, output.join(''));
         } else {
@@ -38,3 +42,14 @@ module.exports = function(source) {
     proc.stdin.write(source);
     proc.stdin.end();
 };
+
+function requireDeps(deps, name, output) {
+    for(let d of deps) {
+        if (isUrlRequest(d)) {
+            let req = JSON.stringify(decodeURIComponent(d));
+            if (name) {
+                output.push(`${name}[${req}] = require(${req});\n`);
+            }
+        }
+    }
+}

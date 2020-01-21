@@ -222,7 +222,6 @@ class Pandoc {
     }
     renderInlineQuoted(child) {
         const ty = child[0].t;
-        console.log(ty);
         if (ty !== 'SingleQuote')
             this.appendSimpleText("\u201C");
         else {
