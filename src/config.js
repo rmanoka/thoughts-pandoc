@@ -25,12 +25,12 @@ function moduleRules() {
         },
         {
             test: /\.css$/,
-            exclude: /node_modules/,
+            exclude: /node_modules|\.min\.css/,
             use: ['style-loader', 'css-loader', 'postcss-loader'],
         },
         {
             test: /\.css$/,
-            include: /node_modules/,
+            include: /node_modules|\.min\.css/,
             use: ['style-loader', 'css-loader'],
         },
         {

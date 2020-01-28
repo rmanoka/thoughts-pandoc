@@ -17,8 +17,7 @@ module.exports = function(P) {
         render(...args) {
             super.render(...args);
             if (this.usesMath) {
-                let css = require('katex/dist/katex.min.css');
-                // this.head.push(createStyle(css));
+                require('katex/dist/katex.min.css');
             }
         }
 
@@ -29,6 +28,8 @@ module.exports = function(P) {
             this.pushElement('span');
             katex.render(code, this.element, {
                 displayMode,
+                strict: false,
+                trust: true,
                 macros: this.mathMacros || {},
                 throwOnError: false,
             });

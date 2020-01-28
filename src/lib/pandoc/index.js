@@ -93,8 +93,8 @@ class Pandoc {
         this.popElement();
     }
     renderBlockCodeBlock(child) {
-        this.pushElement('pre');
-        this.pushElement('code', child[0]);
+        this.pushElement('pre', child[0]);
+        this.pushElement('code');
         this.appendSimpleText(child[1]);
         this.popElement();
         this.popElement();
