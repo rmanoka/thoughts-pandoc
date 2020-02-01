@@ -1,6 +1,7 @@
 const nullAttr = [null, [], []];
 const math = require('./math.js');
 const refs = require('./references.js');
+const scripts = require('./scripts.js');
 
 const { inlineToString } = require('./utils.js');
 
@@ -286,4 +287,4 @@ class Pandoc {
     }
 };
 
-module.exports = refs(math(Pandoc));
+module.exports = scripts(refs(math(Pandoc)));

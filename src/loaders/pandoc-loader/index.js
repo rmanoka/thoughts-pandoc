@@ -1,6 +1,7 @@
 const Proc = require('../proc');
 const DepsParse = require('./deps.js');
 
+const { metaToString } = require('../../lib/pandoc/utils.js');
 const {isUrlRequest} = require('loader-utils');
 
 module.exports = function(source) {
@@ -23,6 +24,12 @@ module.exports = function(source) {
 
             requireDeps(dp.deps, 'deps', output);
             output.push(`ast.meta.deps = deps;\n`);
+
+            if (meta.renderer) {
+                const renderDep = metaToString(meta.renderer);
+                const req = JSON.stringify(renderDep);
+                output.push(`ast.meta.renderer = require(${req});\n`);
+            }
 
             const cssDeps = dp.collectCSS(meta);
             if (cssDeps) {

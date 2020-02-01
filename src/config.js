@@ -84,7 +84,11 @@ function docEntries(entries, entryStyles=[]) {
           }, {entry: {}, dest: {}});
 }
 
-function config({mode, baseDir, entries, entryStyles = [], templateOpts = {}}) {
+function config({
+    mode, baseDir,
+    entries, entryStyles = [], templateOpts = {},
+    alias = true,
+}) {
     baseDir = baseDir || process.cwd();
     mode = mode || (isProd ? 'production' : 'development');
 
@@ -115,6 +119,11 @@ function config({mode, baseDir, entries, entryStyles = [], templateOpts = {}}) {
                 contentBase: distDir,
             },
         });
+    }
+    if (alias) {
+        const res = cfg.resolve = cfg.resolve || {};
+        const al = res.alias = res.alias || {};
+        Object.assign(al, {thoughts: 'thoughts-pandoc/src/lib'});
     }
     return cfg;
 };

@@ -12,4 +12,4 @@ module.exports = function(ast) {
     const R = ast.meta.renderer || require('./pandoc');
     const renderer = new R(ast.meta);
     renderer.render(ast.blocks, root);
-}
+};

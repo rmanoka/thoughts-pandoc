@@ -1,6 +1,18 @@
 const Node = window.Node;
 
 module.exports = {
+    createScript(src, target='head', type='text/javascript', defer="defer") {
+        const script = document.createElement('script');
+        Object.assign(script, {src, type, defer});
+        if (target == 'head') {
+            document.head.appendChild(script);
+        } else if (target == 'body') {
+            document.body.appendChild(script);
+        } else {
+            target.appendChild(script);
+        }
+    },
+
     createStyle(css) {
         if (css.href) {
             return createLink(css.href);
@@ -97,5 +109,24 @@ module.exports = {
             target.setAttribute(attr.nodeName, attr.nodeValue);
         }
 
+    },
+
+    scrollTo(e, opts) {
+        if (!opts) {
+            opts = {
+                block: 'start',
+                inline: 'nearest',
+                behavior: 'smooth',
+            };
+        }
+        setTimeout(() => e.scrollIntoView(opts));
+    },
+
+    setupLocation(id) {
+        if (id) {
+            history.replaceState(id, null, `#${id}`);
+        } else {
+            history.replaceState('root', null, '#');
+        }
     },
 };

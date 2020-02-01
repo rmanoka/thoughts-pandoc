@@ -1,5 +1,6 @@
 const {JSDOM} = require('jsdom');
 const vm = require('vm');
+const fs = require('fs');
 
 function vmExecute(id, source, context) {
     const vmContext = vm.createContext(Object.create(context));
@@ -28,11 +29,9 @@ function render(src, code) {
     return ctx.document.documentElement.innerHTML;
 }
 
-const fs = require('fs');
-function renderFile(srcPath, jsPath, destPath) {
-    const src = fs.readFileSync(srcPath);
+function renderFile(jsPath, destPath, srcPath) {
+    const src = srcPath ? fs.readFileSync(srcPath) : null;
     const code = fs.readFileSync(jsPath);
-    if (!destPath) destPath = srcPath;
 
     const output = render(src, code);
     fs.writeFileSync(destPath, `<!DOCTYPE HTML>\n<html>${output}</html>`);
