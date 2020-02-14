@@ -8,7 +8,7 @@ module.exports = function(source) {
     const cb = this.async();
 
     const proc = new Proc('pandoc',
-                          ['-f', 'markdown', '-t', 'json'],
+                          ['-f', 'markdown+latex_macros', '-t', 'json'],
                           {stdin: true, stdout: true, stderr: true});
     proc.promise.then((code) => {
         if (code == 0) {
@@ -36,6 +36,13 @@ module.exports = function(source) {
                 output.push(`const cssDeps = {};\n`);
                 requireDeps(cssDeps, 'cssDeps', output);
                 output.push(`ast.meta.css = cssDeps;\n`);
+            }
+
+            const incDeps = dp.collectIncludes(meta);
+            if (incDeps) {
+                output.push(`const incDeps = {};\n`);
+                requireDeps(incDeps, 'incDeps', output);
+                output.push(`ast.meta.includes = incDeps\n`);
             }
 
             output.push(`module.exports = ast;\n`);

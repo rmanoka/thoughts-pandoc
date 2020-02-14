@@ -10,6 +10,11 @@ module.exports = class PandocDeps {
         return metaToObject(meta.css);
     }
 
+    collectIncludes(meta) {
+        if (!meta.includes) return null;
+        return metaToObject(meta.includes);
+    }
+
     collectArray(items) {
         if (!items) return;
         items.forEach((i) => this.collectItem(i));

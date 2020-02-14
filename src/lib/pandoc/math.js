@@ -7,7 +7,7 @@ module.exports = function(P) {
         constructor({mathMacros, ...rest}) {
             super(rest);
             if (mathMacros) {
-                mathMacros = metaToObject(mathMacros, true);
+                mathMacros = metaToObject(mathMacros);
             }
             if (mathMacros) {
                 mathMacros = normalizeMacros(mathMacros);

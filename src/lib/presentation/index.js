@@ -22,8 +22,27 @@ module.exports = function(selector, rootElement) {
         const parentElement = sec.parentElement.closest(selector);
         const parentObj = parentElement ? secMap.get(parentElement) : rootState;
 
-        const state = new State({parent: parentObj, element: sec, scrollParent: rootElement});
+        const detail = {element: sec, parent: parentObj};
+        sec.dispatchEvent(
+            new CustomEvent('presentationBeforeCreate', {
+                bubbles: true,
+                detail,
+            })
+        );
+
+        if (detail.ignore) return;
+
+        const state = new State(detail);
         secMap.set(sec, state);
+
+        detail.state = state;
+
+        sec.dispatchEvent(
+            new CustomEvent('presentationAfterCreate', {
+                bubbles: true,
+                detail,
+            })
+        );
     });
 
     return sm;

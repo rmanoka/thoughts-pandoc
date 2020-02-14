@@ -105,21 +105,22 @@ module.exports = class State {
     }
     _setupElement() {
         if (!this.element) return;
-        const classList = this.element.classList;
-        ['present', 'past', 'future', 'active'].forEach(
-            (t) => (t == this.state) || classList.remove(t)
-        );
-        classList.add(this.state);
-        if (this.state === 'present' && this.childIndex == 0) {
-            classList.add('active');
 
-            this.element.dispatchEvent(
-                new CustomEvent('presentationStateActive', {
-                    bubbles: true,
-                    detail: { element: this.element, state: this },
-                })
-            );
+        let state = this.state;
+        if (this.state === 'present' && this.childIndex == 0) {
+            state = 'active';
         }
+
+        this.element.dispatchEvent(
+            new CustomEvent('presentationState', {
+                bubbles: true,
+                detail: {
+                    element: this.element,
+                    state: state,
+                    node: this,
+                },
+            })
+        );
     }
 
 

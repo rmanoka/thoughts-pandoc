@@ -7,12 +7,19 @@ function clickHandler(sm) {
   };
 }
 
-function defaultActiveHandler(ev) {
+function scrollHandler(ev) {
     const {element, state} = ev.detail;
-    scrollTo(element);
+    if (state !== 'active') return;
+    if (element)
+        scrollTo(element);
+}
+
+function locationHashHandler(ev) {
+    const {element, node, state} = ev.detail;
+    if (state !== 'active') return;
     if (element.id)
         setupLocation(element.id);
-    else if (!state.parent)
+    else if (!node.parent)
         setupLocation(null);
 }
 
@@ -26,8 +33,29 @@ function gotoLocation(sm, hash) {
     }
 }
 
+function classListHandler(ev) {
+    const {element, node, state} = ev.detail;
+    const classList = element.classList;
+    ['present', 'past', 'future', 'active'].forEach(
+        (t) => (t == state) || classList.remove(t)
+    );
+    classList.add(state);
+}
+
+function defaultStateHandler(ev) {
+    classListHandler(ev);
+    const {element, node, state} = ev.detail;
+    if (state !== 'active') return;
+    locationHashHandler(ev);
+    if (!element.classList.contains('no-scroll'))
+        scrollHandler(ev);
+}
+
+
+
 module.exports = {
     clickHandler,
-    defaultActiveHandler,
+    scrollHandler, locationHashHandler, classListHandler,
+    defaultStateHandler,
     gotoLocation,
 };

@@ -40,6 +40,10 @@ function moduleRules() {
         {
             test: /\.(png|jpe?g|gif|svg|woff2?|ttf)$/i,
             loader: 'file-loader',
+            options: {
+                outputPath: 'assets',
+                publicPath: '/assets',
+            }
         },
     ];
 }
@@ -70,12 +74,17 @@ function docEntries(entries, entryStyles=[]) {
               ext = '.html';
 
               let entry = 'render/' + dest;
+              let mod;
               if (isArray) {
-                  let mod = key;
+                  mod = key;
+              } else {
+                  mod = entries[key];
+              }
+              if (!Array.isArray(mod)) {
                   if (!mod.startsWith('.')) { mod = './' + mod; }
                   acc.entry[entry] = ['render-loader!' + mod];
               } else {
-                  acc.entry[entry] = [].concat(entries[key]);
+                  acc.entry[entry] = [].concat(mod);
               }
               acc.entry[entry] = entryStyles.concat(acc.entry[entry]);
               acc.dest[dest + ext] = entry;
