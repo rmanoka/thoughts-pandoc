@@ -7,9 +7,9 @@ function escapeHtml(unsafe) {
         .replace(/'/g, "&#039;");
 }
 
-module.exports = function(ast) {
-    const root = document.getElementById("content") || document.body;
+module.exports = function(ast, root, parent) {
+    root = root || document.getElementById("content") || document.body;
     const R = ast.meta.renderer || require('./pandoc');
-    const renderer = new R(ast.meta);
+    const renderer = new R(Object.assign({}, ast.meta, {parent}));
     renderer.render(ast.blocks, root);
 };

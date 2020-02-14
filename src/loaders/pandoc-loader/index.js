@@ -58,11 +58,28 @@ module.exports = function(source) {
 };
 
 function requireDeps(deps, name, output) {
-    for(let d of deps) {
+    const isArray = Array.isArray(deps);
+    let keys;
+    if (isArray)
+        keys = deps;
+    else
+        keys = Object.keys(deps);
+
+    for(let k of keys) {
+        let d;
+        if (isArray)
+            d = k;
+        else
+            d = deps[k];
+
         if (isUrlRequest(d)) {
             let req = JSON.stringify(decodeURIComponent(d));
+            if (isArray)
+                k = req;
+            else
+                k = JSON.stringify(k);
             if (name) {
-                output.push(`${name}[${req}] = require(${req});\n`);
+                output.push(`${name}[${k}] = require(${req});\n`);
             }
         }
     }

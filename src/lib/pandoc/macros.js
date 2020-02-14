@@ -3,9 +3,11 @@ const {metaToObject} = require('./utils.js');
 const SIMPLE_TEX_REGEX = /\\([a-zA-Z]+)\{(.*)\}/;
 const ADD_CLASS_ARG_REGEX = /([a-zA-Z-0-9]+):(.*)/;
 
+const render = require('../render.js');
+
 module.exports = function(P) {
     return class extends P {
-        constructor({blockMacros, inlineMacros, ...rest}) {
+        constructor({includes, blockMacros, inlineMacros, ...rest}) {
             super(rest);
             if (blockMacros) {
                 this.blockMacros = metaToObject(blockMacros);
@@ -16,6 +18,9 @@ module.exports = function(P) {
                 this.inlineMacros = metaToObject(inlineMacros);
             } else {
                 this.inlineMacros = {};
+            }
+            if (includes) {
+                this.includes = includes;
             }
         }
 
@@ -29,6 +34,13 @@ module.exports = function(P) {
             const arg = matches[2];
             if (macro === 'newcommand') {
                 return;
+            } else if (macro === 'include') {
+                const ast = this.includes[arg];
+                if (!ast) {
+                    console.warn(`Warning: no include ${arg} found.`);
+                    return;
+                }
+                render(ast, this.element, this);
             } else if (macro === 'addClass') {
                 this.macroTexaddClass(arg);
             } else {

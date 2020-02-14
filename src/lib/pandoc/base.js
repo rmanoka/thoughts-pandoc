@@ -2,7 +2,7 @@ const { inlineToString } = require('./utils.js');
 const nullAttr = [null, [], []];
 
 class Pandoc {
-    constructor({simpleInlines, deps}={}) {
+    constructor({parent, simpleInlines, deps}={}) {
         simpleInlines = Object.assign({
             Emph: 'em',
             Strong: 'strong',
@@ -15,6 +15,7 @@ class Pandoc {
                 (child) => this.renderInlineSimpleTag(
                     simpleInlines[key], child);
         }
+        this.parent = parent;
         this.deps = deps;
     }
 
@@ -177,7 +178,17 @@ class Pandoc {
     renderInlineImage(child) {
         const alt = child[1].map(inlineToString).join('');
         const src = decodeURIComponent(child[2][0]);
-        child[0][2].push(['src', this.deps[src]]);
+        let imgSrc = this.deps[src];
+        if (!imgSrc) {
+            console.warn(`Image: ${src} not found`);
+            return;
+        }
+        if (imgSrc && imgSrc.default) { imgSrc = imgSrc.default; }
+        if (typeof(imgSrc) !== 'string') {
+            console.warn(`Got image with unknown src: ${imgSrc}`);
+            return;
+        }
+        child[0][2].push(['src', imgSrc]);
         child[0][2].push(['alt', alt]);
         this.pushElement('img', child[0]);
         this.popElement();

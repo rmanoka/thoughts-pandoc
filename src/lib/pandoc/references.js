@@ -24,10 +24,12 @@ module.exports = function(P) {
 
         render(ast, dom) {
             super.render(ast, dom);
-            if (this.sectioning)
-                sectioning(dom);
-            if (this.counters)
-                counterTransform(dom, this.counters);
+            if (!this.parent) {
+                if (this.sectioning)
+                    sectioning(dom);
+                if (this.counters)
+                    counterTransform(dom, this.counters);
+            }
         }
 
         renderInlineCite([cites, inlines]) {
@@ -44,7 +46,6 @@ module.exports = function(P) {
         //         this.addAttrs(this.element, attrs);
         //         return;
         //     }
-
         //     let el = this.element, idx = this.stack.length;
         //     while (el) {
         //         if (el.matches(selector)) break;

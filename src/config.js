@@ -17,7 +17,7 @@ function plugins(dest, opts) {
 
 const isProd = typeof process.env.NODE_ENV !== 'undefined';
 
-function moduleRules() {
+function moduleRules({assetsPath = 'assets', publicPath = '/'}) {
     return [
         {
             test: /\.md$/,
@@ -41,8 +41,8 @@ function moduleRules() {
             test: /\.(png|jpe?g|gif|svg|woff2?|ttf)$/i,
             loader: 'file-loader',
             options: {
-                outputPath: 'assets',
-                publicPath: '/assets',
+                outputPath: `${assetsPath}`,
+                publicPath: `${publicPath}${assetsPath}`,
             }
         },
     ];
@@ -97,6 +97,7 @@ function config({
     mode, baseDir,
     entries, entryStyles = [], templateOpts = {},
     alias = true,
+    assetsPath, publicPath,
 }) {
     baseDir = baseDir || process.cwd();
     mode = mode || (isProd ? 'production' : 'development');
@@ -117,7 +118,7 @@ function config({
         stats: 'minimal',
 
         plugins: plugins(dest, templateOpts),
-        module: { rules: moduleRules() },
+        module: { rules: moduleRules({assetsPath, publicPath}) },
         resolveLoader: resolveLoader(),
     };
 
