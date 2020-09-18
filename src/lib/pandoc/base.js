@@ -180,8 +180,8 @@ class Pandoc {
         const src = decodeURIComponent(child[2][0]);
         let imgSrc = this.deps[src];
         if (!imgSrc) {
-            console.warn(`Image: ${src} not found`);
-            return;
+            console.warn(`Image: ${src} not found; using as direct URL`);
+            imgSrc = src;
         }
         if (imgSrc && imgSrc.default) { imgSrc = imgSrc.default; }
         if (typeof(imgSrc) !== 'string') {
