@@ -4,3 +4,4 @@ build/
 .redo/
 /tmp/
 /datasets
+/.log

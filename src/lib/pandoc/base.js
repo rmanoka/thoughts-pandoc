@@ -267,7 +267,7 @@ class Pandoc {
         }
 
     }
-    pushElement(tag, attrs, func) {
+    pushElement(tag, attrs) {
         // console.log("Pushing for ", tag, this.stack.length);
         // console.log("Current element: ", this.element.tagName);
         const el = this.createElement(tag, attrs);
