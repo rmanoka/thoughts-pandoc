@@ -34,10 +34,6 @@ function moduleRules({assetsPath = 'assets', publicPath = '/'}) {
             use: ['style-loader', 'css-loader'],
         },
         {
-            test: /\.html$/,
-            loader: 'html-loader',
-        },
-        {
             test: /\.(png|jpe?g|gif|svg|woff2?|ttf)$/i,
             loader: 'file-loader',
             options: {
